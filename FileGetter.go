@@ -48,18 +48,18 @@ type File struct {
 /**
  * 現在ディレクトリにAndroidのrun-as領域にあるファイルを全て書き出す
  **/
-func (f *FileGetter) Get() {
+func (f *FileGetter) AllGet() {
 
 }
 
-func (f *FileGetter) searchGet(path string) {
+func (f *FileGetter) PathGet(path string) {
 
 }
 
 /**
  * ファイルリストを取得する
  **/
-func (f *FileGetter) list(path string) []File {
+func (f *FileGetter) PathList(path string) []File {
 	// 指定アプリの指定パスでlsコマンド
 	var out, _ = exec.Command("adb", "shell", "run-as", f.PackageName, "ls", "/data/data/"+f.PackageName+path, "-n").Output()
 	var outStr = string(out)
