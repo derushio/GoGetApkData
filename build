@@ -1,4 +1,4 @@
 #! /bin/bash
 WORKSPACE=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 
-go build -o ./dist/gad ./src/*.go
+go build -o "$WORKSPACE/dist/gad" "$WORKSPACE/src/"*.go
