@@ -9,6 +9,7 @@ func main() {
 	var packageName string
 
 	if len(os.Args) >= 2 {
+		fmt.Println("取得するアプリデータのパッケージ名を入力してください")
 		packageName = os.Args[1]
 	} else {
 		fmt.Scanln(&packageName)
