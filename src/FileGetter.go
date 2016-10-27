@@ -8,12 +8,20 @@ import (
 	"strings"
 )
 
+/**
+ * FileGetter.go
+ * Androidアプリからファイルを取得するクラス
+ **/
 type FileGetter struct {
 	PackageName string
 }
 
 // FileType -st
 
+/**
+ * FileType
+ * ファイルタイプを示すEnum
+ **/
 type FileType int
 
 const (
@@ -40,6 +48,10 @@ func (f *FileType) ToString() string {
 
 // File -st
 
+/**
+ * File
+ * ファイル情報を持つ構造体
+ **/
 type File struct {
 	PackageName string
 	FilePath    string
@@ -47,6 +59,10 @@ type File struct {
 	FileType    FileType
 }
 
+/**
+ * Get
+ * ファイルを取得
+ **/
 func (f *File) Get() {
 	// ファイルじゃない場合は無視
 	if f.FileType != FILE {
