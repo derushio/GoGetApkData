@@ -95,7 +95,7 @@ func (f *FileGetter) GetAll() {
  **/
 func (f *FileGetter) GetPathAll(path string) {
 	// ファイル一覧取得
-	var files = f.PathList(path)
+	var files = f.ListInPath(path)
 	for _, file := range files {
 		if file.FileType == FILE {
 			// ファイルの場合はゲット
@@ -110,7 +110,7 @@ func (f *FileGetter) GetPathAll(path string) {
 /**
  * ファイルリストを取得する
  **/
-func (f *FileGetter) PathList(path string) []File {
+func (f *FileGetter) ListInPath(path string) []File {
 	// 指定アプリの指定パスでlsコマンド
 	var out, _ = exec.Command("adb", "shell", "run-as", f.PackageName, "ls", "/data/data/"+f.PackageName+path, "-n").Output()
 	var outStr = string(out)
