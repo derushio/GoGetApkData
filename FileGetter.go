@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -39,8 +40,20 @@ func (f *FileType) ToString() string {
 // File -st
 
 type File struct {
-	FileName string
-	FileType FileType
+	PackageName string
+	FilePath    string
+	FileName    string
+	FileType    FileType
+}
+
+func (f *File) Get() {
+	if f.FileType != FILE {
+		return
+	}
+
+	fmt.Println("adb", "exec-out", "run-as", f.PackageName, "cat", "/data/data"+f.FilePath+"/"+f.FileName, ">", "./"+f.PackageName+f.FilePath+"/"+f.FileName)
+	exec.Command("mkdir", "-p", "./"+f.PackageName+f.FilePath).Run()
+	exec.Command("adb", "exec-out", "run-as", f.PackageName, "cat", "/data/data"+f.FilePath+"/"+f.FileName, ">", "./"+f.PackageName+f.FilePath+"/"+f.FileName).Run()
 }
 
 // File -ed
@@ -54,6 +67,14 @@ func (f *FileGetter) AllGet() {
 
 func (f *FileGetter) PathGet(path string) {
 
+	var files = f.PathList(path)
+	for _, file := range files {
+		if file.FileType == FILE {
+			file.Get()
+		} else if file.FileType == DIR {
+			f.PathGet(path + "/" + file.FileName)
+		}
+	}
 }
 
 /**
@@ -104,6 +125,8 @@ func (f *FileGetter) PathList(path string) []File {
 
 		// ファイルを構築
 		var file = File{}
+		file.PackageName = f.PackageName
+		file.FilePath = path
 		file.FileName = regAns[0][4]
 		file.FileType = fileType
 

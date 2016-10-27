@@ -17,8 +17,5 @@ func main() {
 	fmt.Println("パッケージ `" + packageName + "` からデータを取得します")
 
 	var fileGetter = FileGetter{packageName}
-	var ls = fileGetter.PathList("")
-	for _, file := range ls {
-		fmt.Println(file.FileName + ": " + file.FileType.ToString())
-	}
+	fileGetter.PathGet("")
 }
