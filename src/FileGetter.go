@@ -145,7 +145,6 @@ func (f *FileGetter) PathList(path string) []File {
 			fileType = LINK
 		default:
 			fileType = UNKNOWN
-			continue
 		}
 
 		// リンクは処理のしようがないので無視
