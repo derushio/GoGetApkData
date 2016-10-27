@@ -25,10 +25,10 @@ type FileGetter struct {
 type FileType int
 
 const (
-	UNKNOWN FileType = iota
-	FILE
+	FILE FileType = iota
 	DIR
 	LINK
+	UNKNOWN
 )
 
 func (f *FileType) ToString() string {
