@@ -48,14 +48,19 @@ type File struct {
 }
 
 func (f *File) Get() {
+	// ファイルじゃない場合は無視
 	if f.FileType != FILE {
 		return
 	}
 
-	// fmt.Println("adb", "exec-out", "run-as", f.PackageName, "cat", "/data/data"+f.FilePath+"/"+f.FileName, ">", "./"+f.PackageName+f.FilePath+"/"+f.FileName)
-	exec.Command("mkdir", "-p", "./"+f.PackageName+f.FilePath).Run()
+	// ファイル取得
 	var fileGetCommand = exec.Command(os.Getenv("SHELL"), "-c", "adb exec-out run-as "+f.PackageName+" cat /data/data/"+f.PackageName+f.FilePath+"/"+f.FileName)
 	var out, _ = fileGetCommand.Output()
+
+	//  ディレクトリ作成
+	exec.Command("mkdir", "-p", "./"+f.PackageName+f.FilePath).Run()
+
+	// ファイル書き込み
 	var content = []byte(out)
 	ioutil.WriteFile("./"+f.PackageName+f.FilePath+"/"+f.FileName, content, os.ModePerm)
 }
@@ -65,18 +70,23 @@ func (f *File) Get() {
 /**
  * 現在ディレクトリにAndroidのrun-as領域にあるファイルを全て書き出す
  **/
-func (f *FileGetter) AllGet() {
-
+func (f *FileGetter) GetAll() {
+	f.GetPathAll("")
 }
 
-func (f *FileGetter) PathGet(path string) {
-
+/**
+ * 現在ディレクトリにAndroidのrun-as領域にあるファイルを指定ディレクトリ以下全て書き出す
+ **/
+func (f *FileGetter) GetPathAll(path string) {
+	// ファイル一覧取得
 	var files = f.PathList(path)
 	for _, file := range files {
 		if file.FileType == FILE {
+			// ファイルの場合はゲット
 			file.Get()
 		} else if file.FileType == DIR {
-			f.PathGet(path + "/" + file.FileName)
+			// ディレクトリの場合は再帰処理
+			f.GetPathAll(path + "/" + file.FileName)
 		}
 	}
 }

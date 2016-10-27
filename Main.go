@@ -17,5 +17,7 @@ func main() {
 	fmt.Println("パッケージ `" + packageName + "` からデータを取得します")
 
 	var fileGetter = FileGetter{packageName}
-	fileGetter.PathGet("")
+	fileGetter.GetAll
+
+	fmt.Println("取得完了")
 }
