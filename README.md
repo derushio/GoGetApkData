@@ -1,5 +1,5 @@
 # GetApkData
-ApkのPrivate領域をまるごと抜き出すGoソース
+ApkのSharedPrefやSQL等を保存しているディレクトリ以下をまるごと抜き出すGoソース
 
 ## 使い方
 `dist/gad` を任意の場所へコピー（PATHが通っている場所が望ましい）し、以下のコマンドを実行  
