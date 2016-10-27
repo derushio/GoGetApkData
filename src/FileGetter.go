@@ -70,7 +70,7 @@ func (f *File) Get() {
 	}
 
 	// ファイル取得
-	var fileGetCommand = exec.Command(os.Getenv("SHELL"), "-c", "adb exec-out run-as "+f.PackageName+" cat /data/data/"+f.PackageName+f.FilePath+"/"+f.FileName)
+	var fileGetCommand = exec.Command("adb", "exec-out", "run-as", f.PackageName, "cat", "/data/data/"+f.PackageName+f.FilePath+"/"+f.FileName)
 	var out, _ = fileGetCommand.Output()
 
 	//  ディレクトリ作成
