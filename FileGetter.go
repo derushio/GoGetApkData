@@ -1,7 +1,8 @@
 package main
 
 import (
-	"fmt"
+	"io/ioutil"
+	"os"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -51,9 +52,12 @@ func (f *File) Get() {
 		return
 	}
 
-	fmt.Println("adb", "exec-out", "run-as", f.PackageName, "cat", "/data/data"+f.FilePath+"/"+f.FileName, ">", "./"+f.PackageName+f.FilePath+"/"+f.FileName)
+	// fmt.Println("adb", "exec-out", "run-as", f.PackageName, "cat", "/data/data"+f.FilePath+"/"+f.FileName, ">", "./"+f.PackageName+f.FilePath+"/"+f.FileName)
 	exec.Command("mkdir", "-p", "./"+f.PackageName+f.FilePath).Run()
-	exec.Command("adb", "exec-out", "run-as", f.PackageName, "cat", "/data/data"+f.FilePath+"/"+f.FileName, ">", "./"+f.PackageName+f.FilePath+"/"+f.FileName).Run()
+	var fileGetCommand = exec.Command(os.Getenv("SHELL"), "-c", "adb exec-out run-as "+f.PackageName+" cat /data/data/"+f.PackageName+f.FilePath+"/"+f.FileName)
+	var out, _ = fileGetCommand.Output()
+	var content = []byte(out)
+	ioutil.WriteFile("./"+f.PackageName+f.FilePath+"/"+f.FileName, content, os.ModePerm)
 }
 
 // File -ed
